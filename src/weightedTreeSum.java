@@ -1,5 +1,3 @@
-package com.zhang.other;
-
 import java.util.LinkedList ;
 
 import com.zhang.leetcode.*;
