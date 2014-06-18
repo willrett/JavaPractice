@@ -1,5 +1,3 @@
-package com.moto.om.algorithms.discretizer;
-
 import java.util.*;
 
 import com.moto.om.util.datatype.*;
