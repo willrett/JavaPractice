@@ -1,12 +1,5 @@
 import java.util.*;
 
-import com.moto.om.util.datatype.*;
-import com.moto.om.util.general.*;
-import com.moto.om.baseclass.io.*;
-import com.moto.om.data.process.hadoop.io.HDFSLineFileReader;
-import com.moto.om.data.process.hadoop.io.HDFSLineFileWriter;
-import com.moto.om.io.*;
-
 /**
  * 
  * <p>
@@ -212,11 +205,11 @@ public class Discretizer
 		return true;
 	}
 
-	public OmObjects discretizeEntropy(AbstractPreprocessColumnDataReader oneAttributeColumnReader, int valueType) throws Exception
+	public Objects discretizeEntropy(AbstractPreprocessColumnDataReader oneAttributeColumnReader, int valueType) throws Exception
 	{
 
 		String attributeFileName = oneAttributeColumnReader.getFileName();
-		OmObjects retObjects = entropyDiscretizer_.discretizeAttributeFile(attributeFileName, valueType, 10);
+		Objects retObjects = entropyDiscretizer_.discretizeAttributeFile(attributeFileName, valueType, 10);
 		double[] splitPoints = (double[]) retObjects.getObjectByIndex(0);
 		Hashtable ht_String_to_Double = retObjects.getObjectByIndexAsHASHTABLE(1);
 		Hashtable ht_Double_to_String = retObjects.getObjectByIndexAsHASHTABLE(2);
@@ -225,18 +218,18 @@ public class Discretizer
 
 	}
 
-	public OmObjects discretizeEntropyOnHDFS(HDFSLineFileReader oneAttributeColumnReader, int valueType) throws Exception
+	public Objects discretizeEntropyOnHDFS(HDFSLineFileReader oneAttributeColumnReader, int valueType) throws Exception
 	{
 
 		String attributeFileName = oneAttributeColumnReader.getFileName();
 		
 		System.out.println("discretizeEntropyOnHDFS: " + attributeFileName);	
-		OmObjects retObjects = entropyDiscretizerOnHadoop_.discretizeAttributeFileOnHDFS(attributeFileName, valueType);
+		Objects retObjects = entropyDiscretizerOnHadoop_.discretizeAttributeFileOnHDFS(attributeFileName, valueType);
 		
 		return retObjects;
 	}
 
-	public OmObjects discretizeNoneOnHDFS(HDFSLineFileReader oneAttributeColumnReader) throws Exception
+	public Objects discretizeNoneOnHDFS(HDFSLineFileReader oneAttributeColumnReader) throws Exception
 	{
 		Hashtable ht_Value_ElementCount = new Hashtable();
 		HDFSLineFileReader quantityReader;
@@ -276,10 +269,10 @@ public class Discretizer
 			}
 
 			// get ht_Value_ElementCount
-			OmLong I = (OmLong) ht_Value_ElementCount.get(oneLine.trim());
+			Long I = (Long) ht_Value_ElementCount.get(oneLine.trim());
 			if (I == null)
 			{
-				I = new OmLong(0);
+				I = new Long(0);
 				ht_Value_ElementCount.put(oneLine.trim(), I);
 			}
 			I.increaseValue(Integer.parseInt(quantityValue));
@@ -294,7 +287,7 @@ public class Discretizer
 		if (hasMissingValue)
 		{
 			String missingValueString = "?";
-			ht_Value_ElementCount.put(missingValueString, new OmLong(missingValueCount));
+			ht_Value_ElementCount.put(missingValueString, new Long(missingValueCount));
 		}
 
 		// get ElementName(actually numbers) from hashtable
@@ -310,7 +303,7 @@ public class Discretizer
 			index++;
 		}
 
-		OmObjects objects = new OmObjects(4);
+		Objects objects = new Objects(4);
 
 		objects.setObjectByIndex(0, elementName);
 		objects.setObjectByIndex(1, ht_Value_ElementCount);
@@ -325,7 +318,7 @@ public class Discretizer
 	 * 
 	 */
 
-	public OmObjects discretizeNone(AbstractPreprocessColumnDataReader oneAttributeColumnReader) throws Exception
+	public Objects discretizeNone(AbstractPreprocessColumnDataReader oneAttributeColumnReader) throws Exception
 	{
 
 		Hashtable ht_Value_ElementCount = new Hashtable();
@@ -365,10 +358,10 @@ public class Discretizer
 			}
 
 			// get ht_Value_ElementCount
-			OmLong I = (OmLong) ht_Value_ElementCount.get(oneLine.trim());
+			Long I = (Long) ht_Value_ElementCount.get(oneLine.trim());
 			if (I == null)
 			{
-				I = new OmLong(0);
+				I = new Long(0);
 				ht_Value_ElementCount.put(oneLine.trim(), I);
 			}
 			I.increaseValue(quantityValue);
@@ -383,7 +376,7 @@ public class Discretizer
 		if (hasMissingValue)
 		{
 			String missingValueString = "?";
-			ht_Value_ElementCount.put(missingValueString, new OmLong(missingValueCount));
+			ht_Value_ElementCount.put(missingValueString, new Long(missingValueCount));
 		}
 
 		// get ElementName(actually numbers) from hashtable
@@ -399,7 +392,7 @@ public class Discretizer
 			index++;
 		}
 
-		OmObjects objects = new OmObjects(4);
+		Objects objects = new OmObjects(4);
 
 		objects.setObjectByIndex(0, elementName);
 		objects.setObjectByIndex(1, ht_Value_ElementCount);
@@ -409,7 +402,7 @@ public class Discretizer
 
 	}
 
-	public OmObjects discretizeManualBins(AbstractPreprocessColumnDataReader oneAttributeReader, Vector additionInfoVector) throws Exception
+	public Objects discretizeManualBins(AbstractPreprocessColumnDataReader oneAttributeReader, Vector additionInfoVector) throws Exception
 	{
 
 		double[] d = new double[additionInfoVector.size()];
@@ -421,7 +414,7 @@ public class Discretizer
 		return processSplitValues(oneAttributeReader, d, null, null);
 	}
 
-	public OmObjects discretizeManualBinsOnHDFS(HDFSLineFileReader oneAttributeReader, Vector additionInfoVector) throws Exception
+	public Objects discretizeManualBinsOnHDFS(HDFSLineFileReader oneAttributeReader, Vector additionInfoVector) throws Exception
 	{
 
 		double[] d = new double[additionInfoVector.size()];
@@ -433,7 +426,7 @@ public class Discretizer
 		return processSplitValuesOnHDFS(oneAttributeReader, d, null, null);
 	}
 
-	public OmObjects discretizeFixedEvenBinNumberOnHDFS(HDFSLineFileReader oneAttributeReader, int binCount) throws Exception
+	public Objects discretizeFixedEvenBinNumberOnHDFS(HDFSLineFileReader oneAttributeReader, int binCount) throws Exception
 	{
 
 		Vector<Double> ret = getFixedEvenBinSplitValueOnHDFS(oneAttributeReader, binCount);
@@ -448,7 +441,7 @@ public class Discretizer
 
 	}
 
-	public OmObjects discretizeFixedEvenBinNumber(AbstractPreprocessColumnDataReader oneAttributeReader, int binCount) throws Exception
+	public Objects discretizeFixedEvenBinNumber(AbstractPreprocessColumnDataReader oneAttributeReader, int binCount) throws Exception
 	{
 
 		Vector<Double> ret = getFixedEvenBinSplitValue(oneAttributeReader, binCount);
@@ -585,7 +578,7 @@ public class Discretizer
 
 		// find all values
 		long totalDataCount = 0;
-		Vector<OmObjects> values = new Vector<OmObjects>();
+		Vector<Objects> values = new Vector<OmObjects>();
 		try
 		{
 			String oneLine = oneAttributeReader.readNextLine();
@@ -598,7 +591,7 @@ public class Discretizer
 					double oneValue = Double.parseDouble(oneLine);
 					oneQuantityLine = quantityReader.readNextInteger();
 
-					OmObjects ob = new OmObjects(2);
+					Objects ob = new Objects(2);
 					ob.setObjectByIndex(0, oneValue);
 					ob.setObjectByIndex(1, oneQuantityLine);
 
@@ -652,7 +645,7 @@ public class Discretizer
 		long count = 0;
 		for (int i = 0; i < values.size(); i++)
 		{
-			OmObjects ob = (OmObjects) values.get(i);
+			Objects ob = (Objects) values.get(i);
 			Double oneValue = (Double) ob.getObjectByIndex(0);
 			Integer oneQuantity = (Integer) ob.getObjectByIndex(1);
 			if (count > eachBinCount)
@@ -670,7 +663,7 @@ public class Discretizer
 
 	}
 
-	private OmObjects processSplitValuesOnHDFS(HDFSLineFileReader oneAttributeReader, double[] splitValues, Hashtable ht_String_to_Double,
+	private Objects processSplitValuesOnHDFS(HDFSLineFileReader oneAttributeReader, double[] splitValues, Hashtable ht_String_to_Double,
 			Hashtable ht_Double_to_String) throws Exception
 	{
 		/* each range contains how many elements */
@@ -875,7 +868,7 @@ public class Discretizer
 
 		}
 
-		OmObjects objects = new OmObjects(7);
+		Objects objects = new Objects(7);
 
 		Vector splitValuesVector = new Vector(splitValues.length);
 		for (int j = 0; j < splitValues.length; j++)
@@ -887,7 +880,7 @@ public class Discretizer
 		{
 			for (int i = 0; i < rangeNames.length; i++)
 			{
-				OmLong I = (OmLong) ht_Range_ElementCount.get(rangeNames[i]);
+				Long I = (Long) ht_Range_ElementCount.get(rangeNames[i]);
 				if (I == null)
 				{
 					I = new OmLong(0);
@@ -919,7 +912,7 @@ public class Discretizer
 	 * saved as processed column file format).
 	 */
 
-	private OmObjects processSplitValues(AbstractPreprocessColumnDataReader oneAttributeReader, double[] splitValues, Hashtable ht_String_to_Double,
+	private Objects processSplitValues(AbstractPreprocessColumnDataReader oneAttributeReader, double[] splitValues, Hashtable ht_String_to_Double,
 			Hashtable ht_Double_to_String) throws Exception
 	{
 
@@ -1125,7 +1118,7 @@ public class Discretizer
 
 		}
 
-		OmObjects objects = new OmObjects(7);
+		Objects objects = new Objects(7);
 
 		Vector splitValuesVector = new Vector(splitValues.length);
 		for (int j = 0; j < splitValues.length; j++)
